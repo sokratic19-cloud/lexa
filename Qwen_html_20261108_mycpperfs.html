@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ПОРТАЛ — квесты в реальности: хоррор и фантастика.">
+    <title>ПОРТАЛ — Квесты в реальности</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-dark: #03050a;
+            --bg-card: #0b101b;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.5);
+            --text: #e2e8f0;
+            --text-dim: #7c8b9e;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; background: rgba(3, 5, 10, 0.95);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+        }
+
+        .logo {
+            font-size: 28px; font-weight: 900; color: var(--accent);
+            text-shadow: 0 0 14px var(--accent-glow); letter-spacing: 2px;
+        }
+
+        nav ul { display: flex; gap: 30px; list-style: none; }
+        nav a { color: var(--text); text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+
+        .hero {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 70px 5%; min-height: 85vh; gap: 40px;
+            background: radial-gradient(circle at 72% 50%, rgba(56, 189, 248, 0.1), transparent 55%);
+        }
+
+        .hero-content { flex: 1; z-index: 2; }
+        .hero h1 { font-size: 54px; font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
+        .hero h1 span { color: var(--accent); text-shadow: 0 0 25px var(--accent-glow); }
+        .slogan { font-size: 22px; color: var(--text-dim); margin-bottom: 40px; font-style: italic; }
+
+        .btn {
+            display: inline-block; padding: 16px 40px; background: var(--accent);
+            color: #03050a; text-decoration: none; border-radius: 8px; font-weight: 700;
+            font-size: 18px; transition: all 0.3s; border: none; cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--accent-glow); }
+
+        /* АНИМИРОВАННЫЙ ПОРТАЛ НА CSS (вместо картинки) */
+        .hero-image {
+            flex: 1.1; max-width: 500px; height: 400px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .css-portal {
+            width: 300px; height: 300px; border-radius: 50%;
+            border: 6px solid var(--accent);
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            box-shadow: 0 0 40px var(--accent-glow), inset 0 0 40px var(--accent-glow);
+            animation: portalPulse 3s infinite ease-in-out;
+            position: relative;
+        }
+        .css-portal::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); width: 260px; height: 260px;
+            border-radius: 50%; border: 2px dashed rgba(56, 189, 248, 0.4);
+            animation: spin 10s linear infinite;
+        }
+        @keyframes portalPulse {
+            0%, 100% { box-shadow: 0 0 40px var(--accent-glow), inset 0 0 40px var(--accent-glow); transform: scale(1); }
+            50% { box-shadow: 0 0 80px var(--accent), inset 0 0 60px var(--accent); transform: scale(1.03); }
+        }
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        section { padding: 80px 5%; }
+        h2 {
+            font-size: 40px; text-align: center; margin-bottom: 60px;
+            color: var(--accent); text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .features {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .feature-card {
+            background: var(--bg-card); padding: 40px 30px; border-radius: 16px;
+            text-align: center; transition: transform 0.3s, box-shadow 0.3s; border: 1px solid #172133;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px); box-shadow: 0 15px 40px rgba(56, 189, 248, 0.12); border-color: var(--accent);
+        }
+        .feature-icon { font-size: 48px; margin-bottom: 20px; }
+        .feature-card h3 { font-size: 22px; margin-bottom: 15px; color: var(--accent); }
+
+        .pricing {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .price-card {
+            background: var(--bg-card); padding: 40px 30px; border-radius: 16px;
+            text-align: center; border: 2px solid #172133; transition: all 0.3s;
+        }
+        .price-card.popular {
+            border-color: var(--accent); position: relative; box-shadow: 0 0 30px rgba(56, 189, 248, 0.1);
+        }
+        .price-card.popular::before {
+            content: "ХИТ"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--accent); color: var(--bg-dark); padding: 4px 16px;
+            border-radius: 12px; font-size: 12px; font-weight: 900; letter-spacing: 1px;
+        }
+        .price-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .price-card h3 { font-size: 26px; margin-bottom: 10px; }
+        .price { font-size: 46px; font-weight: 900; color: var(--accent); margin: 20px 0; }
+        .price span { font-size: 18px; color: var(--text-dim); }
+        .price-features { list-style: none; margin: 30px 0; text-align: left; }
+        .price-features li { padding: 10px 0; border-bottom: 1px solid #172133; }
+
+        .reviews {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .review {
+            background: var(--bg-card); padding: 30px; border-radius: 16px; border-left: 4px solid var(--accent);
+        }
+        .review-text { font-style: italic; margin-bottom: 20px; color: var(--text); }
+        .review-author { color: var(--accent); font-weight: 700; }
+
+        footer {
+            background: #020306; padding: 40px 5%; text-align: center; border-top: 1px solid #172133;
+        }
+        .footer-content { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 30px; margin-bottom: 30px; }
+        .footer-section h4 { color: var(--accent); margin-bottom: 15px; }
+        .social-links { display: flex; gap: 20px; justify-content: center; }
+        .social-links a {
+            color: var(--text); text-decoration: none; padding: 10px 20px;
+            border: 1px solid #22304a; border-radius: 8px; transition: all 0.3s;
+        }
+        .social-links a:hover { border-color: var(--accent); color: var(--accent); }
+        .copyright { color: var(--text-dim); font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; padding: 40px 5%; }
+            .hero h1 { font-size: 36px; }
+            .slogan { font-size: 18px; }
+            nav ul { gap: 15px; font-size: 14px; }
+            h2 { font-size: 30px; }
+            .css-portal { width: 220px; height: 220px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">ПОРТАЛ</div>
+        <nav>
+            <ul>
+                <li><a href="#features">О квестах</a></li>
+                <li><a href="#pricing">Тарифы</a></li>
+                <li><a href="#reviews">Отзывы</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>ШАГНИ ЗА ГРАНЬ <span>РЕАЛЬНОСТИ</span></h1>
+            <p class="slogan">Хоррор и научная фантастика с полным погружением в сюжет.</p>
+            <a href="#pricing" class="btn">Выбрать квест</a>
+        </div>
+        <div class="hero-image">
+            <!-- Анимированный портал на чистом CSS. Картинка больше не нужна! -->
+            <div class="css-portal"></div>
+        </div>
+    </section>
+
+    <section id="features">
+        <h2>Почему мы?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3>Живые актёры</h3>
+                <p>Профессиональные актёры внутри квеста создадут атмосферу настоящего хоррора</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>3 уровня сложности</h3>
+                <p>От новичков до хардкорщиков — каждый найдёт свой уровень страха</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎂</div>
+                <h3>Скидка на ДР</h3>
+                <p>20% скидка именинникам и их компаниям — празднуй страшно!</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <h2>Тарифы</h2>
+        <div class="pricing">
+            <div class="price-card">
+                <h3>Лайт</h3>
+                <div class="price">2500<span>₽</span></div>
+                <ul class="price-features">
+                    <li>✓ Для новичков</li><li>✓ 60 минут</li><li>✓ Без актёров</li><li>✓ До 4 человек</li>
+                </ul>
+                <button class="btn" onclick="alert('Тариф «Лайт» выбран!')">Выбрать</button>
+            </div>
+            <div class="price-card popular">
+                <h3>Стандарт</h3>
+                <div class="price">3500<span>₽</span></div>
+                <ul class="price-features">
+                    <li>✓ Средний уровень</li><li>✓ 75 минут</li><li>✓ 2 актёра</li><li>✓ До 6 человек</li>
+                </ul>
+                <button class="btn" onclick="alert('Тариф «Стандарт» выбран!')">Выбрать</button>
+            </div>
+            <div class="price-card">
+                <h3>Хардкор</h3>
+                <div class="price">5000<span>₽</span></div>
+                <ul class="price-features">
+                    <li>✓ Максимальный ужас</li><li>✓ 90 минут</li><li>✓ 4 актёра</li><li>✓ До 8 человек</li>
+                </ul>
+                <button class="btn" onclick="alert('Тариф «Хардкор» выбран!')">Выбрать</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews">
+        <h2>Отзывы</h2>
+        <div class="reviews">
+            <div class="review">
+                <p class="review-text">"Ор! Мы с пацанами зашли на хардкор и реально орали как сумасшедшие. Атмосфера — огонь. Выйти хотели после первого уровня, но не дали 😂"</p>
+                <p class="review-author">— Максим, 15 лет</p>
+            </div>
+            <div class="review">
+                <p class="review-text">"Отмечали ДР подруги, взяли стандарт. Было страшно, но круто! Скидку дали, ещё и фото на память. Обязательно вернёмся!"</p>
+                <p class="review-author">— Аня, 16 лет</p>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacts">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>📞 +7 (999) 123-45-67</p>
+                <p>📍 ул. Тёмная, 13</p>
+                <p>🕐 Ежедневно 12:00–00:00</p>
+            </div>
+            <div class="footer-section">
+                <h4>Мы в соцсетях</h4>
+                <div class="social-links">
+                    <a href="#">VK</a>
+                    <a href="#">Telegram</a>
+                </div>
+            </div>
+        </div>
+        <p class="copyright">© 2026 Квест-комната "ПОРТАЛ". Все права защищены.</p>
+    </footer>
+
+</body>
+</html>
